@@ -1,0 +1,131 @@
+{
+    "insights": [
+        {
+            "name": "Use of encodedPacked with Dynamic Data Types",
+            "severity": "Low",
+            "precision": "Medium",
+            "description": "It's recommended to avoid `abi.encodePacked()` for dynamic data types before hashing operations, like with `keccak256()`.",
+            "results": [
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/src/KittyConnect.sol",
+                    "lines": "Line 200 Columns 13-29",
+                    "code": "abi.encodePacked"
+                }
+            ],
+            "action-items": [
+                "Unless encodePacked is necessary, switch from `abi.encodePacked()` to `abi.encode()` in scenarios involving dynamic types ahead of hash function usage.",
+                "Consider `bytes.concat()` for concatenating strings or bytes, as a preferable method over `abi.encodePacked()`."
+            ],
+            "references": [
+                "https://docs.soliditylang.org/en/v0.8.13/abi-spec.html#non-standard-packed-mode",
+                "https://ethereum.stackexchange.com/questions/30912/how-to-compare-strings-in-solidity#answer-82739"
+            ],
+            "reports": [
+                "https://github.com/code-423n4/2023-11-shellprotocol/blob/8c6c6a33c817b588567a5b6a65bdda72d905941f/4naly3er-report.md?plain=1#L330",
+                "https://solodit.xyz/issues/l-07-code4rena-backd-backd-contest-git"
+            ]
+        },
+        {
+            "name": "Unspecific Solidity Pragma Detector",
+            "severity": "Low",
+            "precision": "High",
+            "description": "Detects the usage of unspecific compiler pragmas that allow for a broader range of compiler versions than necessary, which can lead to unintended behavior or compiler warnings/errors with newer versions.",
+            "results": [
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/lib/ccip/contracts/src/v0.8/ccip/applications/CCIPReceiver.sol",
+                    "lines": "Line 2 Columns 1-24",
+                    "code": "pragma solidity ^0.8.0;"
+                },
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/lib/ccip/contracts/src/v0.8/ccip/interfaces/IAny2EVMMessageReceiver.sol",
+                    "lines": "Line 2 Columns 1-24",
+                    "code": "pragma solidity ^0.8.0;"
+                },
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/lib/ccip/contracts/src/v0.8/ccip/interfaces/IRouterClient.sol",
+                    "lines": "Line 2 Columns 1-24",
+                    "code": "pragma solidity ^0.8.0;"
+                },
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/lib/ccip/contracts/src/v0.8/ccip/libraries/Client.sol",
+                    "lines": "Line 2 Columns 1-24",
+                    "code": "pragma solidity ^0.8.0;"
+                },
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/lib/ccip/contracts/src/v0.8/vendor/openzeppelin-solidity/v4.8.0/contracts/token/ERC20/IERC20.sol",
+                    "lines": "Line 4 Columns 1-24",
+                    "code": "pragma solidity ^0.8.0;"
+                },
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/lib/ccip/contracts/src/v0.8/vendor/openzeppelin-solidity/v4.8.0/contracts/utils/introspection/IERC165.sol",
+                    "lines": "Line 4 Columns 1-24",
+                    "code": "pragma solidity ^0.8.0;"
+                }
+            ],
+            "action-items": [
+                "Specify a more precise range of compiler versions in the pragma statement to ensure consistent behavior across different environments."
+            ],
+            "references": [
+                "https://docs.soliditylang.org/en/latest/layout-of-source-files.html#version-pragma"
+            ],
+            "reports": [
+                "https://github.com/Steemhunt/mint.club-v2-contract/issues/36",
+                "https://solodit.xyz/issues/n-06-inconsistent-method-of-specifying-a-floating-pragma-code4rena-ens-ens-contest-git"
+            ]
+        },
+        {
+            "name": "Missing Zero Address Check",
+            "severity": "Low",
+            "precision": "Medium",
+            "description": "In Solidity, contracts often interact with external addresses. Failing to check for a possible 0 address input (especially in constructors, setters, and initializer functions) before such interactions can lead to unexpected dangerous behavior. A zero address check ensures that addresses are explicitly provided and not left uninitialized or set to a default, invalid state.",
+            "results": [
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/lib/ccip/contracts/src/v0.8/ccip/applications/CCIPReceiver.sol",
+                    "lines": "Line 14 Columns 15-29",
+                    "code": "address router"
+                },
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/src/KittyBridge.sol",
+                    "lines": "Line 25 Columns 17-32",
+                    "code": "address _router"
+                },
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/src/KittyBridge.sol",
+                    "lines": "Line 25 Columns 34-47",
+                    "code": "address _link"
+                },
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/src/KittyBridge.sol",
+                    "lines": "Line 25 Columns 49-74",
+                    "code": "address kittyConnectOwner"
+                },
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/src/KittyConnect.sol",
+                    "lines": "Line 61 Columns 45-59",
+                    "code": "address router"
+                },
+                {
+                    "file": "/Users/aitor/repos_codehawks/2024-03-kitty-connect/src/KittyConnect.sol",
+                    "lines": "Line 61 Columns 61-73",
+                    "code": "address link"
+                }
+            ],
+            "action-items": [
+                "Use require statements to validate addresses before any operation involving external addresses is performed, especially on constructors, setters or initializer functions."
+            ],
+            "references": [
+                "https://detectors.auditbase.com/check-state-variable-address-zero-solidity"
+            ],
+            "reports": [
+                "https://github.com/code-423n4/2024-01-curves/blob/main/bot-report.md#l-06"
+            ]
+        }
+    ],
+    "nsloc": {
+        "file_count": 479,
+        "code_count": 29874,
+        "documentation_count": 21798,
+        "empty_count": 13650,
+        "string_count": 57
+    }
+}

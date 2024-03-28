@@ -111,3 +111,4 @@ A user is first required to approve the kitty NFT to the new owner, and is then 
 # Known Issues
 
 - there is one known bug while bridging the NFT to other chain, the previousOwners of the cat are not passed because they may cost a large amount of gas.
+# 2024-03-kitty-connect
