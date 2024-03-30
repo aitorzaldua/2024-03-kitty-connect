@@ -1,0 +1,31 @@
+{
+  "clientRemote": "",
+  "gitRemote": "",
+  "gitSha": "",
+  "treeEntries": [
+    {
+      "label": "Error de Logica: No comprueba que la shop tenga NFTs",
+      "entryType": 0,
+      "author": "aitor",
+      "locations": [
+        {
+          "path": "src/KittyConnect.sol",
+          "startLine": 212,
+          "endLine": 216,
+          "label": "",
+          "description": ""
+        }
+      ],
+      "details": {
+        "severity": "High",
+        "difficulty": "High",
+        "type": "Undefined Behavior",
+        "description": "",
+        "exploit": "",
+        "recommendation": "Short term, \nLong term, \n"
+      }
+    }
+  ],
+  "auditedFiles": [],
+  "resolvedEntries": []
+}

@@ -142,11 +142,14 @@ contract KittyConnect is ERC721 {
         string memory breed,
         uint256 dob
     ) external onlyShopPartner {
+        // 1. Comprueba que la address facilitada no es una tienda.
         require(!s_isKittyShop[catOwner], "KittyConnect__CatOwnerCantBeShopPartner");
 
+        // 2. suma 1 al counter
         uint256 tokenId = kittyTokenCounter;
         kittyTokenCounter++;
 
+        // 3. Carga los datos del cat
         s_catInfo[tokenId] = CatInfo({
             catName: catName,
             breed: breed,
@@ -157,11 +160,17 @@ contract KittyConnect is ERC721 {
             idx: s_ownerToCatsTokenId[catOwner].length
         });
 
+        // 4. Suma el usuario como cat owner
         s_ownerToCatsTokenId[catOwner].push(tokenId);
 
+        // 5. mintea el NFT
         _safeMint(catOwner, tokenId);
         emit CatMinted(tokenId, catIpfsHash);
     }
+
+    /*
+     * @audit-high los usuarios pueden usar transferFrom para transferir el nft sin pasar por una shop
+     */
 
     /**
      * @notice it is used to facilitate transfer of cat ownership to new owner
@@ -186,10 +195,21 @@ contract KittyConnect is ERC721 {
     // EXTERNAL PUBLIC OWNER ///
     ////////////////////////////
 
+    /*
+     * @audit-high falta una funcion para transferir el ownership.
+     */
+
     /**
      * @notice Allows the owner of the protocol to add a new shop partner
      * @param shopAddress The address of new shop partner
      */
+    /*
+     * @audit-high no comprueba que el owner de un cat se convierta en tienda a posteriori.
+     * ver require de funcion    mintCatToNewOwner
+     */
+    /*
+      * @audit-medium addShop: Can only add shops, not remove; potential clutter or misuse if a shop is compromised.
+      */
     function addShop(address shopAddress) external onlyKittyConnectOwner {
         s_isKittyShop[shopAddress] = true;
         s_kittyShops.push(shopAddress);
