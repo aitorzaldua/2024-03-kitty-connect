@@ -4,22 +4,110 @@
   "gitSha": "",
   "treeEntries": [
     {
-      "label": "Error de Logica: No comprueba que la shop tenga NFTs",
+      "label": "QA: Usa el mismo chainSelector. Vigila",
       "entryType": 0,
       "author": "aitor",
       "locations": [
         {
-          "path": "src/KittyConnect.sol",
-          "startLine": 212,
-          "endLine": 216,
+          "path": "script/DeployKittyConnect.s.sol",
+          "startLine": 23,
+          "endLine": 24,
           "label": "",
           "description": ""
         }
       ],
       "details": {
-        "severity": "High",
-        "difficulty": "High",
-        "type": "Undefined Behavior",
+        "severity": "",
+        "difficulty": "",
+        "type": "",
+        "description": "",
+        "exploit": "",
+        "recommendation": "Short term, \nLong term, \n"
+      }
+    },
+    {
+      "label": "HIGH: addShop permite el alta de la shop aunque tenga NFTs",
+      "entryType": 0,
+      "author": "aitor",
+      "locations": [
+        {
+          "path": "src/KittyConnect.sol",
+          "startLine": 206,
+          "endLine": 208,
+          "label": "",
+          "description": ""
+        }
+      ],
+      "details": {
+        "severity": "",
+        "difficulty": "",
+        "type": "",
+        "description": "",
+        "exploit": "",
+        "recommendation": "Short term, \nLong term, \n"
+      }
+    },
+    {
+      "label": "HIGH: Falta una funcion para transferir el ownership",
+      "entryType": 0,
+      "author": "aitor",
+      "locations": [
+        {
+          "path": "src/KittyConnect.sol",
+          "startLine": 197,
+          "endLine": 199,
+          "label": "",
+          "description": ""
+        }
+      ],
+      "details": {
+        "severity": "",
+        "difficulty": "",
+        "type": "",
+        "description": "",
+        "exploit": "",
+        "recommendation": "Short term, \nLong term, \n"
+      }
+    },
+    {
+      "label": "MEDIUM: Puede sumar shops pero no retirarlas",
+      "entryType": 0,
+      "author": "aitor",
+      "locations": [
+        {
+          "path": "src/KittyConnect.sol",
+          "startLine": 209,
+          "endLine": 211,
+          "label": "",
+          "description": ""
+        }
+      ],
+      "details": {
+        "severity": "",
+        "difficulty": "",
+        "type": "",
+        "description": "",
+        "exploit": "",
+        "recommendation": "Short term, \nLong term, \n"
+      }
+    },
+    {
+      "label": "HIGH: Los usuarios pueden transferir NFTs con transferFrom ",
+      "entryType": 0,
+      "author": "aitor",
+      "locations": [
+        {
+          "path": "src/KittyConnect.sol",
+          "startLine": 170,
+          "endLine": 172,
+          "label": "",
+          "description": ""
+        }
+      ],
+      "details": {
+        "severity": "",
+        "difficulty": "",
+        "type": "",
         "description": "",
         "exploit": "",
         "recommendation": "Short term, \nLong term, \n"

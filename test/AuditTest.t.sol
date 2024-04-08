@@ -75,14 +75,55 @@ contract AuditTest is Test {
     }
 
     function test_userTransferNFTOwnership() external {
-        test_mintCatToOwner();
-        KittyConnect.CatInfo memory catInfo = kittyConnect.getCatInfo(0);
-        console2.log("name: ", catInfo.catName);
+        string memory catImageIpfsHash = "ipfs://QmbxwGgBGrNdXPm84kqYskmcMT3jrzBN8LzQjixvkz4c62";
+        // 1. Mint NFT
+        vm.prank(shopOwner0);
+        kittyConnect.mintCatToNewOwner(address(user), catImageIpfsHash, "Meowdy", "Ragdoll", block.timestamp);
+        uint256 tokenId = kittyConnect.getTokenCounter() - 1;
+        assertEq(kittyConnect.ownerOf(tokenId), address(user));
 
+        // 2. User Transfer the NFT without using a shop
         vm.prank(user);
-        kittyConnect.transferFrom(user, newOwner, 0);
-        // kittyConnect.safeTransferFrom(user, newOwner, 0);
+        kittyConnect.transferFrom(user, newOwner, tokenId);
+        assertEq(kittyConnect.ownerOf(tokenId), address(newOwner));
+    }
 
-        console2.log("new Owner: ", kittyConnect.ownerOf(0));
+    function test_differentBehaivourBetweenFunctions() external {
+        string memory catImageIpfsHash = "ipfs://QmbxwGgBGrNdXPm84kqYskmcMT3jrzBN8LzQjixvkz4c62";
+        /**
+         * mintCatToNewOwner() doesn´t allow to mint to a shop
+         */
+        vm.prank(shopOwner0);
+        vm.expectRevert("KittyConnect__CatOwnerCantBeShopPartner");
+        kittyConnect.mintCatToNewOwner(address(shopOwner1), catImageIpfsHash, "Meowdy", "Ragdoll", block.timestamp);
+        /**
+         * It is allowed to transfer the NFT to a shop
+         */
+        // 1. Add NFT to user
+        vm.prank(shopOwner0);
+        kittyConnect.mintCatToNewOwner(address(user), catImageIpfsHash, "Meowdy", "Ragdoll", block.timestamp);
+        uint256 tokenId = kittyConnect.getTokenCounter() - 1;
+        assertEq(kittyConnect.ownerOf(tokenId), address(user));
+
+        // 2. User send the NFT to the shop. No problem!
+        vm.prank(user);
+        kittyConnect.approve(address(shopOwner0), tokenId);
+        vm.prank(shopOwner0);
+        kittyConnect.safeTransferFrom(user, shopOwner0, 0);
+        assertEq(kittyConnect.ownerOf(tokenId), address(shopOwner0));
+
+        /**
+         * Users with NFTs can become shops
+         */
+        // 1. Add NFT to user
+        vm.prank(shopOwner0);
+        kittyConnect.mintCatToNewOwner(address(user), catImageIpfsHash, "Meowdy2", "Ragdoll2", block.timestamp);
+        tokenId = kittyConnect.getTokenCounter() - 1;
+        assertEq(kittyConnect.ownerOf(tokenId), address(user));
+
+        // 2. Convert user into a shop. No problem!
+        vm.prank(KittyConnectOwner);
+        kittyConnect.addShop(user);
+        assertEq(kittyConnect.getKittyShopAtIdx(2), user);
     }
 }

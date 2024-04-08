@@ -169,7 +169,7 @@ contract KittyConnect is ERC721 {
     }
 
     /*
-     * @audit-high los usuarios pueden usar transferFrom para transferir el nft sin pasar por una shop
+     * @audit-qa los usuarios pueden usar transferFrom para transferir el nft sin pasar por una shop --DONE
      */
 
     /**
@@ -196,7 +196,7 @@ contract KittyConnect is ERC721 {
     ////////////////////////////
 
     /*
-     * @audit-high falta una funcion para transferir el ownership.
+     * @audit-qa falta una funcion para transferir el ownership. ----DONE
      */
 
     /**
@@ -204,11 +204,11 @@ contract KittyConnect is ERC721 {
      * @param shopAddress The address of new shop partner
      */
     /*
-     * @audit-high no comprueba que el owner de un cat se convierta en tienda a posteriori.
-     * ver require de funcion    mintCatToNewOwner
+     * @audit-qa no comprueba que el owner de un cat se convierta en tienda a posteriori.
+     * ver require de funcion    mintCatToNewOwner -- DONE!!!!
      */
     /*
-      * @audit-medium addShop: Can only add shops, not remove; potential clutter or misuse if a shop is compromised.
+      * @audit-qa addShop: Can only add shops, not remove; potential clutter or misuse if a shop is compromised.
       */
     function addShop(address shopAddress) external onlyKittyConnectOwner {
         s_isKittyShop[shopAddress] = true;
